@@ -1,0 +1,8 @@
+W:\opensource\asp_dot_net_web_mvc\dot_net_core\cli\bin\Debug\netcoreapp1.0\cli.deps.json
+W:\opensource\asp_dot_net_web_mvc\dot_net_core\cli\bin\Debug\netcoreapp1.0\cli.runtimeconfig.json
+W:\opensource\asp_dot_net_web_mvc\dot_net_core\cli\bin\Debug\netcoreapp1.0\cli.runtimeconfig.dev.json
+W:\opensource\asp_dot_net_web_mvc\dot_net_core\cli\bin\Debug\netcoreapp1.0\cli.dll
+W:\opensource\asp_dot_net_web_mvc\dot_net_core\cli\bin\Debug\netcoreapp1.0\cli.pdb
+W:\opensource\asp_dot_net_web_mvc\dot_net_core\cli\obj\Debug\netcoreapp1.0\cli.AssemblyInfo.cs
+W:\opensource\asp_dot_net_web_mvc\dot_net_core\cli\obj\Debug\netcoreapp1.0\cli.dll
+W:\opensource\asp_dot_net_web_mvc\dot_net_core\cli\obj\Debug\netcoreapp1.0\cli.pdb
