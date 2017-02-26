@@ -13,3 +13,4 @@
 10. cd project_name (my was bismilla, cd bismillah)
 11. dotnet restore
 12. dotnet run
+13. dotnet ef database update (Optional for database init)
