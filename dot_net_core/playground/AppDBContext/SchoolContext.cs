@@ -1,4 +1,5 @@
-﻿using playground.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using playground.Model;
 
 namespace playground.AppDBContext
 {
