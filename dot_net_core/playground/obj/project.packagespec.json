@@ -1,0 +1,48 @@
+﻿{
+  "version": "1.0.0",
+  "restore": {
+    "projectUniqueName": "W:\\opensource\\asp_dot_net_web_mvc\\dot_net_core\\playground\\playground.csproj",
+    "projectName": "playground",
+    "projectPath": "W:\\opensource\\asp_dot_net_web_mvc\\dot_net_core\\playground\\playground.csproj",
+    "outputPath": "W:\\opensource\\asp_dot_net_web_mvc\\dot_net_core\\playground\\obj\\",
+    "projectStyle": "PackageReference",
+    "originalTargetFrameworks": [
+      "netcoreapp1.1"
+    ],
+    "frameworks": {
+      "netcoreapp1.1": {
+        "projectReferences": {}
+      }
+    }
+  },
+  "frameworks": {
+    "netcoreapp1.1": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "target": "Package",
+          "version": "1.1.1"
+        },
+        "Microsoft.AspNetCore": {
+          "target": "Package",
+          "version": "1.1.1"
+        },
+        "Microsoft.AspNetCore.Mvc": {
+          "target": "Package",
+          "version": "1.1.2"
+        },
+        "Microsoft.AspNetCore.StaticFiles": {
+          "target": "Package",
+          "version": "1.1.1"
+        },
+        "Microsoft.Extensions.Logging.Debug": {
+          "target": "Package",
+          "version": "1.1.1"
+        },
+        "Microsoft.VisualStudio.Web.BrowserLink": {
+          "target": "Package",
+          "version": "1.1.0"
+        }
+      }
+    }
+  }
+}
