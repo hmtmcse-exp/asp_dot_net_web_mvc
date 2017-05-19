@@ -10,23 +10,23 @@ using playground.Model;
 
 namespace playground.Controllers
 {
-    public class CoursesController : Controller
+    public class DepartmentsController : Controller
     {
         private readonly SchoolContext _context;
 
-        public CoursesController(SchoolContext context)
+        public DepartmentsController(SchoolContext context)
         {
             _context = context;    
         }
 
-        // GET: Courses
+        // GET: Departments
         public async Task<IActionResult> Index()
         {
-            var schoolContext = _context.Courses.Include(c => c.Department);
+            var schoolContext = _context.Departments.Include(d => d.Administrator);
             return View(await schoolContext.ToListAsync());
         }
 
-        // GET: Courses/Details/5
+        // GET: Departments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +34,42 @@ namespace playground.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses
-                .Include(c => c.Department)
-                .SingleOrDefaultAsync(m => m.CourseID == id);
-            if (course == null)
+            var department = await _context.Departments
+                .Include(d => d.Administrator)
+                .SingleOrDefaultAsync(m => m.DepartmentID == id);
+            if (department == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(department);
         }
 
-        // GET: Courses/Create
+        // GET: Departments/Create
         public IActionResult Create()
         {
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "Name");
+            ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FirstMidName");
             return View();
         }
 
-        // POST: Courses/Create
+        // POST: Departments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseID,Title,Credits,DepartmentID")] Course course)
+        public async Task<IActionResult> Create([Bind("DepartmentID,Name,Budget,StartDate,InstructorID")] Department department)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(course);
+                _context.Add(department);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID", course.DepartmentID);
-            return View(course);
+            ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FirstMidName", department.InstructorID);
+            return View(department);
         }
 
-        // GET: Courses/Edit/5
+        // GET: Departments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +77,23 @@ namespace playground.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses.SingleOrDefaultAsync(m => m.CourseID == id);
-            if (course == null)
+            var department = await _context.Departments.SingleOrDefaultAsync(m => m.DepartmentID == id);
+            if (department == null)
             {
                 return NotFound();
             }
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID", course.DepartmentID);
-            return View(course);
+            ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FirstMidName", department.InstructorID);
+            return View(department);
         }
 
-        // POST: Courses/Edit/5
+        // POST: Departments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourseID,Title,Credits,DepartmentID")] Course course)
+        public async Task<IActionResult> Edit(int id, [Bind("DepartmentID,Name,Budget,StartDate,InstructorID")] Department department)
         {
-            if (id != course.CourseID)
+            if (id != department.DepartmentID)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace playground.Controllers
             {
                 try
                 {
-                    _context.Update(course);
+                    _context.Update(department);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CourseExists(course.CourseID))
+                    if (!DepartmentExists(department.DepartmentID))
                     {
                         return NotFound();
                     }
@@ -118,11 +118,11 @@ namespace playground.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID", course.DepartmentID);
-            return View(course);
+            ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FirstMidName", department.InstructorID);
+            return View(department);
         }
 
-        // GET: Courses/Delete/5
+        // GET: Departments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +130,31 @@ namespace playground.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses
-                .Include(c => c.Department)
-                .SingleOrDefaultAsync(m => m.CourseID == id);
-            if (course == null)
+            var department = await _context.Departments
+                .Include(d => d.Administrator)
+                .SingleOrDefaultAsync(m => m.DepartmentID == id);
+            if (department == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(department);
         }
 
-        // POST: Courses/Delete/5
+        // POST: Departments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var course = await _context.Courses.SingleOrDefaultAsync(m => m.CourseID == id);
-            _context.Courses.Remove(course);
+            var department = await _context.Departments.SingleOrDefaultAsync(m => m.DepartmentID == id);
+            _context.Departments.Remove(department);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool CourseExists(int id)
+        private bool DepartmentExists(int id)
         {
-            return _context.Courses.Any(e => e.CourseID == id);
+            return _context.Departments.Any(e => e.DepartmentID == id);
         }
     }
 }
