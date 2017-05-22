@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Scaffold.DynamicUIGenerator;
 
 namespace Scaffold
 {
@@ -11,6 +12,8 @@ namespace Scaffold
     {
         public static void Main(string[] args)
         {
+            ModelReader.Read(args[0]);
+            
             for(int i = 0; i < args.Length; i++)
             {
                 Console.WriteLine("Arg[{0}] = [{1}]", i, args[i]);
