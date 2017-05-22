@@ -11,6 +11,11 @@ namespace Scaffold
     {
         public static void Main(string[] args)
         {
+            for(int i = 0; i < args.Length; i++)
+            {
+                Console.WriteLine("Arg[{0}] = [{1}]", i, args[i]);
+            }
+            
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
