@@ -3,10 +3,4 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Scaffold\Scaffold.csproj">
-      <Project>{2e7ae4dc-d774-49d9-baba-6e310b378a25}</Project>
-      <Name>Scaffold</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

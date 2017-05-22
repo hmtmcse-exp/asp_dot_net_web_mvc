@@ -10,6 +10,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DynamicUIGenerator\Templates\Startup" />
+    <Folder Include="DynamicUIGenerator\Templates\StaticFiles\Content" />
+    <Folder Include="DynamicUIGenerator\Templates\StaticFiles\Scripts" />
+    <Folder Include="DynamicUIGenerator\Templates\ViewGenerator" />
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>

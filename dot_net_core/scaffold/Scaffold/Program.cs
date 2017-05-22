@@ -14,19 +14,30 @@ namespace Scaffold
         {
             ModelReader.Read(args[0]);
             
-            for(int i = 0; i < args.Length; i++)
+            var action = args[0];
+
+            switch (action)
             {
-                Console.WriteLine("Arg[{0}] = [{1}]", i, args[i]);
+                case "list":
+                    ModelReader.ModelList();
+                    break;
+                case "generate":
+                    ModelReader.Read(args[0]);
+                    break;
             }
             
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .Build();
+            Console.WriteLine(action);
 
-            host.Run();
+            
+            
+//            var host = new WebHostBuilder()
+//                .UseKestrel()
+//                .UseContentRoot(Directory.GetCurrentDirectory())
+//                .UseIISIntegration()
+//                .UseStartup<Startup>()
+//                .Build();
+//
+//            host.Run();
         }
     }
 }
