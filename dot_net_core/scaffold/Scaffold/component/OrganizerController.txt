@@ -1,0 +1,112 @@
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MiaISoftMasterApp.AppDBContext;
+using MiaISoftMasterApp.Controllers.AppCommon;
+using MiaISoftMasterApp.Models;
+using MiaISoftMasterApp.Services.Common;
+
+namespace MiaISoftMasterApp.Controllers
+{
+    public class OrganizerController : BaseController
+    {
+
+        public OrganizerController(MISMasterDBContext context)
+        {
+            _context = context;  
+        }
+        
+        private async Task<IActionResult> DataForm(int? id, string actionName)
+        {
+            var organizer = id == null ? null : await _context.Organizer.SingleOrDefaultAsync(m => m.Id == id);
+            if (organizer == null)
+            {
+                Notify(false, "Invalid Content.");
+                return RedirectToAction("Index");
+            }
+            switch (actionName)
+            {
+                case "Details":
+                    return View("Details", organizer);
+                case "Edit":
+                    return View("Edit", organizer);
+                case "Delete":
+                    _context.Organizer.Remove(organizer);
+                    await _context.SaveChangesAsync();
+                    Notify(true, organizer.Name + " Deleted.");
+                    return RedirectToAction("Index");
+                case "DbUpdateConcurrencyException":
+                    Notify(false, "The Dataset Changed By Other User, Please Try Again.");
+                    break;
+            } 
+            return RedirectToAction("Index");
+        }
+        
+        
+        public async Task<IActionResult> Index()
+        {
+            var organizers = from data in _context.Organizer select data;
+            return View(await ReadHelper<Organizer>.listAsync(organizers.AsNoTracking(), Request.Query));
+        }
+
+        
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            return await DataForm(id, "Details");
+        }
+
+        
+        public async Task<IActionResult> Edit(int? id)
+        {
+            return await DataForm(id, "Edit");
+        }
+        
+        
+        public async Task<IActionResult> Delete(int? id)
+        {
+            return await DataForm(id, "Delete");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Organizer organizer)
+        {
+            if (!ModelState.IsValid) return View(organizer);
+            _context.Add(organizer);
+            await _context.SaveChangesAsync();
+            Notify(true, "Successfully Created");
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Organizer organizer)
+        {
+            if (id != organizer.Id)
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid) return View(organizer);
+            try
+            {
+                _context.Update(organizer);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return await DataForm(id, "DbUpdateConcurrencyException");
+            }
+            return RedirectToAction("Index");
+        }
+
+    }
+}

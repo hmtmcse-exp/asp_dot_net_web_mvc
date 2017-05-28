@@ -1,0 +1,43 @@
+@model MiaISoftMasterApp.Models.Organizer
+
+<h3 class="page-header">Organizer Details</h3>
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrganizerType)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.OrganizerType)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.UsageInterface)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.UsageInterface)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.IsEnable)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsEnable)
+            </dd>
+        </dl>
+        <div class="pull-right">
+            <a asp-controller="Organizer" asp-action="Index" class="btn  btn-info">Back</a>
+        </div>
+    </div>
+</div>
