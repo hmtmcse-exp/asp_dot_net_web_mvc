@@ -60,22 +60,48 @@ namespace Scaffold.DynamicUIGenerator
                     
                     // Need To Check. boolean, enum, object, Integer, float
                     
+                    
                     foreach(var prop in type.GetProperties())
                     {                    
-                        var atttrs = prop.GetCustomAttributes(false);
-                        foreach (var attr in atttrs)
+//                        var atttrs = prop.GetCustomAttributes(false);
+//                        foreach (var attr in atttrs)
+//                        {
+//                            if (attr.GetType().Name.Equals("DisplayAttribute"))
+//                            {
+//                                Console.WriteLine("Display Name {0}",  prop.GetCustomAttribute<DisplayAttribute>().Name); 
+//                            }
+//                            else if (attr.GetType().Name.Equals("DataTypeAttribute"))
+//                            {
+//                                Console.WriteLine("Data Type {0}",  prop.GetCustomAttribute<DataTypeAttribute>().DataType); 
+//                            }
+//                            Console.WriteLine("{0}", attr.GetType().Name);   
+//                        }
+
+                        if (prop.PropertyType.Name.Equals("Boolean"))
                         {
-                            if (attr.GetType().Name.Equals("DisplayAttribute"))
-                            {
-                                Console.WriteLine("Display Name {0}",  prop.GetCustomAttribute<DisplayAttribute>().Name); 
-                            }
-                            else if (attr.GetType().Name.Equals("DataTypeAttribute"))
-                            {
-                                Console.WriteLine("Data Type {0}",  prop.GetCustomAttribute<DataTypeAttribute>().DataType); 
-                            }
-                            Console.WriteLine("{0}", attr.GetType().Name);   
+                            Console.WriteLine(" Checkbox "); 
                         }
-                        Console.WriteLine("{0} {1}", prop.Name, prop.PropertyType );
+                        else if (prop.PropertyType.Name.Equals("String"))
+                        {
+                            Console.WriteLine(" Textbox "); 
+                        }
+                        else if (prop.PropertyType.Name.Equals("Byte[]"))
+                        {
+                            Console.WriteLine(" Hidden Row "); 
+                        }
+                        else if (prop.PropertyType.Name.Equals("Int32"))
+                        {
+                            Console.WriteLine(" Number ");
+                        }
+                        else
+                        {
+                            Console.WriteLine(" Select "); 
+                        }
+                            
+
+
+                        
+                        Console.WriteLine("{0} {1} ", prop.Name, prop.PropertyType.Name);
                     }
                 }
 

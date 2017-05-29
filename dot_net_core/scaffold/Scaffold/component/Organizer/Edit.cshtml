@@ -1,15 +1,15 @@
-@model MiaISoftMasterApp.Models.Organizer
+@model __MODEL_WIHT_NAMESPACE__
 
-<h3 class="page-header">Create Organizer</h3>
+<h3 class="page-header">Create __MODEL_NAME__</h3>
 <div class="panel panel-primary">
     <div class="panel-body">
-        <form asp-action="Edit" asp-controller="Organizer" method="post">
+        <form asp-action="Edit" asp-controller="__MODEL_NAME__" method="post">
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="RowVersion" />
             @Html.Partial("Form")
             <div class="form-action pull-right">
                 <button name="create" class="btn btn-primary" type="submit">Update</button>
-                <a asp-controller="Organizer" asp-action="Index" class="btn  btn-danger">Cancel</a>
+                <a asp-controller="__MODEL_NAME__" asp-action="Index" class="btn  btn-danger">Cancel</a>
             </div>
         </form>
     </div>

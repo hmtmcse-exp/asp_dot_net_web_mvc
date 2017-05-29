@@ -39,8 +39,6 @@ namespace Scaffold
                     }
                     break;
             }
-            
-            Console.WriteLine(action);
 
             
             
