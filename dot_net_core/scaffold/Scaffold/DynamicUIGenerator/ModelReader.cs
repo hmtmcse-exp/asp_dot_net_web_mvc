@@ -50,23 +50,35 @@ namespace Scaffold.DynamicUIGenerator
                 Console.WriteLine("Code Base: " + Directory.GetParent(Directory.GetCurrentDirectory()).FullName);
                 Assembly myAssembly = Assembly.GetEntryAssembly();
                 Type type = myAssembly.GetType(modelNamespace);
-                foreach(var prop in type.GetProperties())
+                if (type == null)
                 {
-                    var atttrs = prop.GetCustomAttributes(false);
-                    foreach (var attr in atttrs)
-                    {
-                        if (attr.GetType().Name.Equals("DisplayAttribute"))
-                        {
-                            Console.WriteLine("Display Name {0}",  prop.GetCustomAttribute<DisplayAttribute>().Name); 
-                        }
-                        else if (attr.GetType().Name.Equals("DataTypeAttribute"))
-                        {
-                            Console.WriteLine("Data Type {0}",  prop.GetCustomAttribute<DataTypeAttribute>().DataType); 
-                        }
-                        Console.WriteLine("{0}", attr.GetType().Name);  
-                    }
-                    Console.WriteLine("{0} {1}", prop.Name, prop.PropertyType );
+                    Console.WriteLine("Invalid Model.");
                 }
+                else
+                {
+                    var modelName = type.Name;  
+                    
+                    // Need To Check. boolean, enum, object, Integer, float
+                    
+                    foreach(var prop in type.GetProperties())
+                    {                    
+                        var atttrs = prop.GetCustomAttributes(false);
+                        foreach (var attr in atttrs)
+                        {
+                            if (attr.GetType().Name.Equals("DisplayAttribute"))
+                            {
+                                Console.WriteLine("Display Name {0}",  prop.GetCustomAttribute<DisplayAttribute>().Name); 
+                            }
+                            else if (attr.GetType().Name.Equals("DataTypeAttribute"))
+                            {
+                                Console.WriteLine("Data Type {0}",  prop.GetCustomAttribute<DataTypeAttribute>().DataType); 
+                            }
+                            Console.WriteLine("{0}", attr.GetType().Name);   
+                        }
+                        Console.WriteLine("{0} {1}", prop.Name, prop.PropertyType );
+                    }
+                }
+
 
             }
         }
