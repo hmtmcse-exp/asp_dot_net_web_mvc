@@ -69,14 +69,17 @@ namespace Scaffold.DynamicUIGenerator
             formRow += rowBody;
         }
         
-        private static string GenerateTableCol(string type, string name)
+        private static void GenerateTableCol(string name)
         {
-            return null;
+            tableHead += "<table-header name=\"" + name + "\">" + name +"</table-header>";
+            tableBody += "<td>@Html.DisplayFor(modelItem => item." + name +")</td>";
         }
         
-        private static string GenerateDetails(string type, string name)
+        private static void GenerateDetails(string name)
         {
-            return null;
+            var html = "<dt>@Html.DisplayNameFor(model => model." + name +")</dt>" + Environment.NewLine;
+            html += "<dd>@Html.DisplayFor(model => model." + name +")</dd>" + Environment.NewLine;
+            detailsRow += html;
         }
 
         public static void Generate(string modelNamespace)
