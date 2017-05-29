@@ -18,7 +18,59 @@ namespace Scaffold.DynamicUIGenerator
                 Console.WriteLine("{0}", prop.Name);
             }
         }
-        
+
+        public static void ModelListByNamespace(string modelNamespace)
+        {
+            if (modelNamespace == null)
+            {
+                Console.WriteLine("Please provide Model Namespace");
+            }
+            else
+            {
+                Assembly myAssembly = Assembly.GetEntryAssembly();
+                foreach (Type type in myAssembly.GetTypes())
+                {
+                    var klassName = type.FullName;
+                    if (klassName != null && klassName.StartsWith(modelNamespace))
+                    {
+                        Console.WriteLine(klassName); 
+                    }
+                }
+            }
+        }
+
+        public static void Generate(string modelNamespace)
+        {
+            if (modelNamespace == null)
+            {
+                Console.WriteLine("Please provide Model With Namespace");
+            }
+            else
+            {
+                Console.WriteLine("Code Base: " + Directory.GetParent(Directory.GetCurrentDirectory()).FullName);
+                Assembly myAssembly = Assembly.GetEntryAssembly();
+                Type type = myAssembly.GetType(modelNamespace);
+                foreach(var prop in type.GetProperties())
+                {
+                    var atttrs = prop.GetCustomAttributes(false);
+                    foreach (var attr in atttrs)
+                    {
+                        if (attr.GetType().Name.Equals("DisplayAttribute"))
+                        {
+                            Console.WriteLine("Display Name {0}",  prop.GetCustomAttribute<DisplayAttribute>().Name); 
+                        }
+                        else if (attr.GetType().Name.Equals("DataTypeAttribute"))
+                        {
+                            Console.WriteLine("Data Type {0}",  prop.GetCustomAttribute<DataTypeAttribute>().DataType); 
+                        }
+                        Console.WriteLine("{0}", attr.GetType().Name);  
+                    }
+                    Console.WriteLine("{0} {1}", prop.Name, prop.PropertyType );
+                }
+
+            }
+        }
+
         public static void ModelList()
         {
             Assembly myAssembly = Assembly.GetEntryAssembly();

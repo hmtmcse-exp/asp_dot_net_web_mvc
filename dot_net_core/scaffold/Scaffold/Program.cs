@@ -19,10 +19,24 @@ namespace Scaffold
             switch (action)
             {
                 case "list":
-                    ModelReader.ModelList();
+                    if (args.Length < 2)
+                    {
+                        Console.WriteLine("Please provide Model Namespace");
+                    }
+                    else
+                    {
+                        ModelReader.ModelListByNamespace(args[1]);  
+                    }
                     break;
                 case "generate":
-                    ModelReader.Read(args[0]);
+                    if (args.Length < 2)
+                    {
+                        Console.WriteLine("Please provide Model With Namespace");
+                    }
+                    else
+                    {
+                        ModelReader.Generate(args[1]);  
+                    }
                     break;
             }
             
