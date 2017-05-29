@@ -10,6 +10,11 @@ namespace Scaffold.DynamicUIGenerator
 {
     public class ModelReader
     {
+        private static string tableHead = "";
+        private static string tableBody = "";
+        private static string formRow = "";
+        private static string detailsRow = "";
+        
         public static void Read(string model)
         {
             var type = Type.GetType(model);
@@ -39,9 +44,29 @@ namespace Scaffold.DynamicUIGenerator
             }
         }
 
-        private static string GenerateFormRow(string type, string name)
+        private static void GenerateFormRow(string type, string name)
         {
-            return null;
+            var rowBody = "<div class=\"form-group\">" + Environment.NewLine;
+            switch (type)
+            {
+                case "text" :
+                    rowBody += "<label asp-for=\"" + name + "\" class=\"control-label\"></label>" + Environment.NewLine;
+                    rowBody += "<input asp-for=\"" + name + "\" class=\"form-control\"/>" + Environment.NewLine;
+                    break;
+                case "boolean" :
+                    rowBody += "<div class=\"checkbox\">" + Environment.NewLine;
+                    rowBody += "<label class=\"control-label\">" + Environment.NewLine;
+                    rowBody += "<input asp-for=\"" + name + "\"/>@Html.DisplayNameFor(model => model." + name + ")" + Environment.NewLine;
+                    rowBody += "</label>" + Environment.NewLine + "</div>" + Environment.NewLine;
+                    break;
+                case "select":
+                    rowBody += "<label asp-for=\"" + name + "\" class=\"control-label\"></label>" + Environment.NewLine;
+                    rowBody += "<select asp-for=\"" + name + "\" asp-items=\"" + name + "\" class=\"form-control\"></select>" + Environment.NewLine;
+                    break;
+            }
+            rowBody += " <span class=\"has-error\"><span class=\"help-block\" asp-validation-for=\"" + name + "\" ></span></span>" + Environment.NewLine;
+            rowBody += "</div>" + Environment.NewLine;
+            formRow += rowBody;
         }
         
         private static string GenerateTableCol(string type, string name)
@@ -119,8 +144,6 @@ namespace Scaffold.DynamicUIGenerator
                         Console.WriteLine("{0} {1} ", prop.Name, prop.PropertyType.Name);
                     }
                 }
-
-
             }
         }
 

@@ -43,7 +43,9 @@
 
 <div class="form-group">
     <div class="checkbox">
-        <label class="control-label"><input asp-for="IsEnable"/>@Html.DisplayNameFor(model => model.IsEnable)</label>
+        <label class="control-label">
+            <input asp-for="IsEnable"/>@Html.DisplayNameFor(model => model.IsEnable)
+        </label>
     </div>
     <span class="has-error"><span class="help-block" asp-validation-for="IsEnable"></span></span>
 </div>
