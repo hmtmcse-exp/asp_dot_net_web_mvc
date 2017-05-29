@@ -9,18 +9,18 @@ using MiaISoftMasterApp.Services.Common;
 
 namespace MiaISoftMasterApp.Controllers
 {
-    public class OrganizerController : BaseController
+    public class __MODEL_NAME__Controller : BaseController
     {
 
-        public OrganizerController(MISMasterDBContext context)
+        public __MODEL_NAME__Controller(MISMasterDBContext context)
         {
             _context = context;  
         }
         
         private async Task<IActionResult> DataForm(int? id, string actionName)
         {
-            var organizer = id == null ? null : await _context.Organizer.SingleOrDefaultAsync(m => m.Id == id);
-            if (organizer == null)
+            var dataModel = id == null ? null : await _context.__MODEL_NAME__.SingleOrDefaultAsync(m => m.Id == id);
+            if (dataModel == null)
             {
                 Notify(false, "Invalid Content.");
                 return RedirectToAction("Index");
@@ -28,11 +28,11 @@ namespace MiaISoftMasterApp.Controllers
             switch (actionName)
             {
                 case "Details":
-                    return View("Details", organizer);
+                    return View("Details", dataModel);
                 case "Edit":
-                    return View("Edit", organizer);
+                    return View("Edit", dataModel);
                 case "Delete":
-                    _context.Organizer.Remove(organizer);
+                    _context.__MODEL_NAME__.Remove(dataModel);
                     await _context.SaveChangesAsync();
                     Notify(true, organizer.Name + " Deleted.");
                     return RedirectToAction("Index");
@@ -46,8 +46,8 @@ namespace MiaISoftMasterApp.Controllers
         
         public async Task<IActionResult> Index()
         {
-            var organizers = from data in _context.Organizer select data;
-            return View(await ReadHelper<Organizer>.listAsync(organizers.AsNoTracking(), Request.Query));
+            var selectedData = from data in _context.__MODEL_NAME__ select data;
+            return View(await ReadHelper<__MODEL_NAME__>.listAsync(selectedData.AsNoTracking(), Request.Query));
         }
 
         
@@ -76,10 +76,10 @@ namespace MiaISoftMasterApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Organizer organizer)
+        public async Task<IActionResult> Create(__MODEL_NAME__ formData)
         {
-            if (!ModelState.IsValid) return View(organizer);
-            _context.Add(organizer);
+            if (!ModelState.IsValid) return View(formData);
+            _context.Add(formData);
             await _context.SaveChangesAsync();
             Notify(true, "Successfully Created");
             return RedirectToAction("Index");
@@ -88,17 +88,17 @@ namespace MiaISoftMasterApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Organizer organizer)
+        public async Task<IActionResult> Edit(int id, __MODEL_NAME__ formData)
         {
-            if (id != organizer.Id)
+            if (id != formData.Id)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid) return View(organizer);
+            if (!ModelState.IsValid) return View(formData);
             try
             {
-                _context.Update(organizer);
+                _context.Update(formData);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

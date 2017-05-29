@@ -39,6 +39,21 @@ namespace Scaffold.DynamicUIGenerator
             }
         }
 
+        private static string GenerateFormRow(string type, string name)
+        {
+            return null;
+        }
+        
+        private static string GenerateTableCol(string type, string name)
+        {
+            return null;
+        }
+        
+        private static string GenerateDetails(string type, string name)
+        {
+            return null;
+        }
+
         public static void Generate(string modelNamespace)
         {
             if (modelNamespace == null)
