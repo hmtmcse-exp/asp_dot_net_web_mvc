@@ -41,7 +41,7 @@ namespace Scaffold.DynamicUIGenerator
             }
         }
 
-        private static void GenerateFormRow(string type, string name)
+        private static void GenerateFormRow(string type, string name, bool isRequired)
         {
             var rowBody = "<div class=\"form-group\">" + Environment.NewLine;
             switch (type)
@@ -102,45 +102,50 @@ namespace Scaffold.DynamicUIGenerator
                     
                     
                     foreach(var prop in type.GetProperties())
-                    {                    
-//                        var atttrs = prop.GetCustomAttributes(false);
-//                        foreach (var attr in atttrs)
-//                        {
-//                            if (attr.GetType().Name.Equals("DisplayAttribute"))
-//                            {
-//                                Console.WriteLine("Display Name {0}",  prop.GetCustomAttribute<DisplayAttribute>().Name); 
-//                            }
-//                            else if (attr.GetType().Name.Equals("DataTypeAttribute"))
-//                            {
-//                                Console.WriteLine("Data Type {0}",  prop.GetCustomAttribute<DataTypeAttribute>().DataType); 
-//                            }
-//                            Console.WriteLine("{0}", attr.GetType().Name);   
-//                        }
+                    {
+                        var isRequired = false;
+                        var atttrs = prop.GetCustomAttributes(false);
+                        foreach (var attr in atttrs)
+                        {
+                            if (attr.GetType().Name.Equals("RequiredAttribute"))
+                            {
+                                isRequired = true;
+                            }
+                        }
 
                         if (prop.PropertyType.Name.Equals("Boolean"))
                         {
+                            GenerateFormRow("boolean", modelName, isRequired);
                             Console.WriteLine(" Checkbox "); 
                         }
                         else if (prop.PropertyType.Name.Equals("String"))
                         {
+                            GenerateFormRow("text", modelName, isRequired);
                             Console.WriteLine(" Textbox "); 
                         }
                         else if (prop.PropertyType.Name.Equals("Byte[]"))
                         {
-                            Console.WriteLine(" Hidden Row "); 
+                            if (!prop.Name.Equals("RowVersion"))
+                            {
+                                Console.WriteLine(" Hidden Row ");  
+                            }
                         }
                         else if (prop.PropertyType.Name.Equals("Int32"))
                         {
-                            Console.WriteLine(" Number ");
+                            if (!prop.Name.Equals("Id"))
+                            {
+                                GenerateFormRow("text", modelName, isRequired); 
+                            }
                         }
                         else
                         {
-                            Console.WriteLine(" Select "); 
+                            GenerateFormRow("select", modelName, isRequired);
                         }
-                            
-
-
-                        
+                        if (!prop.Name.Equals("Id") && !prop.Name.Equals("RowVersion"))
+                        {
+                            GenerateTableCol(prop.Name);
+                            GenerateDetails(prop.Name);
+                        }
                         Console.WriteLine("{0} {1} ", prop.Name, prop.PropertyType.Name);
                     }
                 }
