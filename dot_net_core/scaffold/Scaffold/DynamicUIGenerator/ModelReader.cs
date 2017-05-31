@@ -153,7 +153,22 @@ namespace Scaffold.DynamicUIGenerator
                             GenerateTableCol(prop.Name);
                             GenerateDetails(prop.Name);
                         }
-
+                        string text = ReadFile(Path.Combine(viewComponentPath, "Create.cshtml"), modelName, modelNamespace);
+                        
+                        text = ReadFile(Path.Combine(viewComponentPath, "Details.cshtml"), modelName, modelNamespace);
+                        text = text?.Replace("__DETAILS_ROW__", detailsRow);
+                        
+                        text = ReadFile(Path.Combine(viewComponentPath, "Edit.cshtml"), modelName, modelNamespace);
+                        
+                        
+                        text = ReadFile(Path.Combine(viewComponentPath, "Form.cshtml"), modelName, modelNamespace);
+                        text = text?.Replace("__FORM_ROW__", tableHead);
+                        
+                        text = ReadFile(Path.Combine(viewComponentPath, "Index.cshtml"), modelName, modelNamespace);
+                        text = text?.Replace("__TABLE_BODY__", tableBody);
+                        text = text?.Replace("__TABLE_HEAD__", tableHead);
+                        
+                        text = ReadFile(Path.Combine(componentPath, "Controller.txt"), modelName, modelNamespace);
 
                         Console.WriteLine("{0} {1} ", prop.Name, prop.PropertyType.Name);
                     }
@@ -161,7 +176,7 @@ namespace Scaffold.DynamicUIGenerator
             }
         }
 
-        public static string readFile(string location)
+        public static string ReadFile(string location, string modelName, string mNamespace)
         {
             string text = null;
             if (!File.Exists(location))
@@ -171,7 +186,8 @@ namespace Scaffold.DynamicUIGenerator
             else
             {
                 text = File.ReadAllText(location);
-                text = text?.Replace("", "");
+                text = text?.Replace("__MODEL_NAME__", modelName);
+                text = text?.Replace("__MODEL_WIHT_NAMESPACE__", mNamespace);
             }
 
             return text;
