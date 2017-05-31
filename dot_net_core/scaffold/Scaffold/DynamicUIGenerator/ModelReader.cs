@@ -91,9 +91,12 @@ namespace Scaffold.DynamicUIGenerator
             }
             else
             {
-                var componentPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName,
-                    "component");
+                var sourceCodePath = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
+                var controllersPath = Path.Combine(sourceCodePath,"Controllers");
+                var viewPath = Path.Combine(sourceCodePath,"Views");
+                var componentPath = Path.Combine(sourceCodePath,"component");
                 var viewComponentPath = Path.Combine(componentPath, "view");
+                var viewModel = "";
 
                 Assembly myAssembly = Assembly.GetEntryAssembly();
                 Type type = myAssembly.GetType(modelNamespace);
@@ -104,9 +107,14 @@ namespace Scaffold.DynamicUIGenerator
                 else
                 {
                     var modelName = type.Name;
+                    viewModel = Path.Combine(viewPath, modelName);
+                    if (Directory.Exists(viewModel))
+                    {
+                        Directory.Delete(viewModel,true);
+                    }
+                    Directory.CreateDirectory(viewModel);
 
                     // Need To Check. boolean, enum, object, Integer, float
-
 
                     foreach (var prop in type.GetProperties())
                     {
@@ -153,29 +161,49 @@ namespace Scaffold.DynamicUIGenerator
                             GenerateTableCol(prop.Name);
                             GenerateDetails(prop.Name);
                         }
-                        string text = ReadFile(Path.Combine(viewComponentPath, "Create.cshtml"), modelName, modelNamespace);
                         
-                        text = ReadFile(Path.Combine(viewComponentPath, "Details.cshtml"), modelName, modelNamespace);
-                        text = text?.Replace("__DETAILS_ROW__", detailsRow);
-                        
-                        text = ReadFile(Path.Combine(viewComponentPath, "Edit.cshtml"), modelName, modelNamespace);
-                        
-                        
-                        text = ReadFile(Path.Combine(viewComponentPath, "Form.cshtml"), modelName, modelNamespace);
-                        text = text?.Replace("__FORM_ROW__", tableHead);
-                        
-                        text = ReadFile(Path.Combine(viewComponentPath, "Index.cshtml"), modelName, modelNamespace);
-                        text = text?.Replace("__TABLE_BODY__", tableBody);
-                        text = text?.Replace("__TABLE_HEAD__", tableHead);
-                        
-                        text = ReadFile(Path.Combine(componentPath, "Controller.txt"), modelName, modelNamespace);
-
                         Console.WriteLine("{0} {1} ", prop.Name, prop.PropertyType.Name);
                     }
+                    
+                    string text = ReadFile(Path.Combine(viewComponentPath, "Create.cshtml"), modelName, modelNamespace);
+                    WriteToFile(Path.Combine(viewModel, "Create.cshtml"), text);
+                        
+                    text = ReadFile(Path.Combine(viewComponentPath, "Details.cshtml"), modelName, modelNamespace);
+                    text = text?.Replace("__DETAILS_ROW__", detailsRow);
+                    WriteToFile(Path.Combine(viewModel, "Details.cshtml"), text);
+                        
+                    text = ReadFile(Path.Combine(viewComponentPath, "Edit.cshtml"), modelName, modelNamespace);
+                    WriteToFile(Path.Combine(viewModel, "Edit.cshtml"), text);
+                        
+                    text = ReadFile(Path.Combine(viewComponentPath, "Form.cshtml"), modelName, modelNamespace);
+                    text = text?.Replace("__FORM_ROW__", tableHead);
+                    WriteToFile(Path.Combine(viewModel, "Form.cshtml"), text);
+                        
+                    text = ReadFile(Path.Combine(viewComponentPath, "Index.cshtml"), modelName, modelNamespace);
+                    text = text?.Replace("__TABLE_BODY__", tableBody);
+                    text = text?.Replace("__TABLE_HEAD__", tableHead);
+                    WriteToFile(Path.Combine(viewModel, "Index.cshtml"), text);
+                        
+                    text = ReadFile(Path.Combine(componentPath, "Controller.txt"), modelName, modelNamespace);
+                    WriteToFile(Path.Combine(componentPath, modelName + "Controller.cs"), text);
+                        
                 }
             }
         }
 
+
+        public static void WriteToFile(string location, string content)
+        {
+            if (File.Exists(location))
+            {
+                File.Delete(location);
+            }
+            if (content != null)
+            {
+                File.WriteAllText(location, content);  
+            }
+        }
+        
         public static string ReadFile(string location, string modelName, string mNamespace)
         {
             string text = null;
