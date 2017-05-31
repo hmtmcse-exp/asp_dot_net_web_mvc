@@ -67,6 +67,8 @@ namespace Scaffold.DynamicUIGenerator
             rowBody += " <span class=\"has-error\"><span class=\"help-block\" asp-validation-for=\"" + name +
                        "\" ></span></span>" + Environment.NewLine;
             rowBody += "</div>" + Environment.NewLine;
+            rowBody += Environment.NewLine;
+            rowBody += Environment.NewLine;
             formRow += rowBody;
         }
 
