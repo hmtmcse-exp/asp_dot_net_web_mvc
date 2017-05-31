@@ -129,15 +129,16 @@ namespace Scaffold.DynamicUIGenerator
                                 isRequired = true;
                             }
                         }
+                        var propertyName = prop.Name;
 
                         if (prop.PropertyType.Name.Equals("Boolean"))
                         {
-                            GenerateFormRow("boolean", modelName, isRequired);
+                            GenerateFormRow("boolean", propertyName, isRequired);
                             Console.WriteLine(" Checkbox ");
                         }
                         else if (prop.PropertyType.Name.Equals("String"))
                         {
-                            GenerateFormRow("text", modelName, isRequired);
+                            GenerateFormRow("text", propertyName, isRequired);
                             Console.WriteLine(" Textbox ");
                         }
                         else if (prop.PropertyType.Name.Equals("Byte[]"))
@@ -151,12 +152,12 @@ namespace Scaffold.DynamicUIGenerator
                         {
                             if (!prop.Name.Equals("Id"))
                             {
-                                GenerateFormRow("text", modelName, isRequired);
+                                GenerateFormRow("text", propertyName, isRequired);
                             }
                         }
                         else
                         {
-                            GenerateFormRow("select", modelName, isRequired);
+                            GenerateFormRow("select", propertyName, isRequired);
                         }
                         if (!prop.Name.Equals("Id") && !prop.Name.Equals("RowVersion"))
                         {
@@ -164,7 +165,7 @@ namespace Scaffold.DynamicUIGenerator
                             GenerateDetails(prop.Name);
                         }
                         
-                        Console.WriteLine("{0} {1} ", prop.Name, prop.PropertyType.Name);
+                        Console.WriteLine("{0} {1} ", propertyName, prop.PropertyType.Name);
                     }
                     
                     string text = ReadFile(Path.Combine(viewComponentPath, "Create.cshtml"), modelName, modelNamespace);
