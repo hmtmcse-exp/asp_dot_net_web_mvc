@@ -31,11 +31,7 @@
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
-                <table-header name="name">Name</table-header>
-                <table-header name="email">Email</table-header>
-                <table-header name="OrganizerType">Organizer Type</table-header>
-                <table-header name="UsageInterface">Usage Interface</table-header>
-                <table-header name="IsEnable">Is Enable</table-header>
+                __TABLE_HEAD__
                 <th class="action-row">Action</th>
             </tr>
             </thead>
@@ -45,19 +41,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td> @Html.DisplayFor(modelItem => item.Name)</td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrganizerType)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UsageInterface)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsEnable)
-                    </td>
+                    __TABLE_BODY__
                     <td class="action-row">
                         <div class="btn-toolbar">
                             <div class="btn-group  btn-group-justified">

@@ -11,12 +11,13 @@ namespace Scaffold.DynamicUIGenerator
         private static string tableBody = "";
         private static string formRow = "";
         private static string detailsRow = "";
-        
+
         public static void Read(string model)
         {
             var type = Type.GetType(model);
             if (type == null) return;
-            foreach(var prop in type.GetProperties()) {
+            foreach (var prop in type.GetProperties())
+            {
                 Console.WriteLine("{0}", prop.Name);
             }
         }
@@ -35,7 +36,7 @@ namespace Scaffold.DynamicUIGenerator
                     var klassName = type.FullName;
                     if (klassName != null && klassName.StartsWith(modelNamespace))
                     {
-                        Console.WriteLine(klassName); 
+                        Console.WriteLine(klassName);
                     }
                 }
             }
@@ -46,36 +47,39 @@ namespace Scaffold.DynamicUIGenerator
             var rowBody = "<div class=\"form-group\">" + Environment.NewLine;
             switch (type)
             {
-                case "text" :
+                case "text":
                     rowBody += "<label asp-for=\"" + name + "\" class=\"control-label\"></label>" + Environment.NewLine;
                     rowBody += "<input asp-for=\"" + name + "\" class=\"form-control\"/>" + Environment.NewLine;
                     break;
-                case "boolean" :
+                case "boolean":
                     rowBody += "<div class=\"checkbox\">" + Environment.NewLine;
                     rowBody += "<label class=\"control-label\">" + Environment.NewLine;
-                    rowBody += "<input asp-for=\"" + name + "\"/>@Html.DisplayNameFor(model => model." + name + ")" + Environment.NewLine;
+                    rowBody += "<input asp-for=\"" + name + "\"/>@Html.DisplayNameFor(model => model." + name + ")" +
+                               Environment.NewLine;
                     rowBody += "</label>" + Environment.NewLine + "</div>" + Environment.NewLine;
                     break;
                 case "select":
                     rowBody += "<label asp-for=\"" + name + "\" class=\"control-label\"></label>" + Environment.NewLine;
-                    rowBody += "<select asp-for=\"" + name + "\" asp-items=\"" + name + "\" class=\"form-control\"></select>" + Environment.NewLine;
+                    rowBody += "<select asp-for=\"" + name + "\" asp-items=\"" + name +
+                               "\" class=\"form-control\"></select>" + Environment.NewLine;
                     break;
             }
-            rowBody += " <span class=\"has-error\"><span class=\"help-block\" asp-validation-for=\"" + name + "\" ></span></span>" + Environment.NewLine;
+            rowBody += " <span class=\"has-error\"><span class=\"help-block\" asp-validation-for=\"" + name +
+                       "\" ></span></span>" + Environment.NewLine;
             rowBody += "</div>" + Environment.NewLine;
             formRow += rowBody;
         }
-        
+
         private static void GenerateTableCol(string name)
         {
-            tableHead += "<table-header name=\"" + name + "\">" + name +"</table-header>";
-            tableBody += "<td>@Html.DisplayFor(modelItem => item." + name +")</td>";
+            tableHead += "<table-header name=\"" + name + "\">" + name + "</table-header>";
+            tableBody += "<td>@Html.DisplayFor(modelItem => item." + name + ")</td>";
         }
-        
+
         private static void GenerateDetails(string name)
         {
-            var html = "<dt>@Html.DisplayNameFor(model => model." + name +")</dt>" + Environment.NewLine;
-            html += "<dd>@Html.DisplayFor(model => model." + name +")</dd>" + Environment.NewLine;
+            var html = "<dt>@Html.DisplayNameFor(model => model." + name + ")</dt>" + Environment.NewLine;
+            html += "<dd>@Html.DisplayFor(model => model." + name + ")</dd>" + Environment.NewLine;
             detailsRow += html;
         }
 
@@ -87,7 +91,10 @@ namespace Scaffold.DynamicUIGenerator
             }
             else
             {
-                Console.WriteLine("Code Base: " + Directory.GetParent(Directory.GetCurrentDirectory()).FullName);
+                var componentPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName,
+                    "component");
+                var viewComponentPath = Path.Combine(componentPath, "view");
+
                 Assembly myAssembly = Assembly.GetEntryAssembly();
                 Type type = myAssembly.GetType(modelNamespace);
                 if (type == null)
@@ -96,12 +103,12 @@ namespace Scaffold.DynamicUIGenerator
                 }
                 else
                 {
-                    var modelName = type.Name;  
-                    
+                    var modelName = type.Name;
+
                     // Need To Check. boolean, enum, object, Integer, float
-                    
-                    
-                    foreach(var prop in type.GetProperties())
+
+
+                    foreach (var prop in type.GetProperties())
                     {
                         var isRequired = false;
                         var atttrs = prop.GetCustomAttributes(false);
@@ -116,25 +123,25 @@ namespace Scaffold.DynamicUIGenerator
                         if (prop.PropertyType.Name.Equals("Boolean"))
                         {
                             GenerateFormRow("boolean", modelName, isRequired);
-                            Console.WriteLine(" Checkbox "); 
+                            Console.WriteLine(" Checkbox ");
                         }
                         else if (prop.PropertyType.Name.Equals("String"))
                         {
                             GenerateFormRow("text", modelName, isRequired);
-                            Console.WriteLine(" Textbox "); 
+                            Console.WriteLine(" Textbox ");
                         }
                         else if (prop.PropertyType.Name.Equals("Byte[]"))
                         {
                             if (!prop.Name.Equals("RowVersion"))
                             {
-                                Console.WriteLine(" Hidden Row ");  
+                                Console.WriteLine(" Hidden Row ");
                             }
                         }
                         else if (prop.PropertyType.Name.Equals("Int32"))
                         {
                             if (!prop.Name.Equals("Id"))
                             {
-                                GenerateFormRow("text", modelName, isRequired); 
+                                GenerateFormRow("text", modelName, isRequired);
                             }
                         }
                         else
@@ -146,11 +153,30 @@ namespace Scaffold.DynamicUIGenerator
                             GenerateTableCol(prop.Name);
                             GenerateDetails(prop.Name);
                         }
+
+
                         Console.WriteLine("{0} {1} ", prop.Name, prop.PropertyType.Name);
                     }
                 }
             }
         }
+
+        public static string readFile(string location)
+        {
+            string text = null;
+            if (!File.Exists(location))
+            {
+                return null;
+            }
+            else
+            {
+                text = File.ReadAllText(location);
+                text = text?.Replace("", "");
+            }
+
+            return text;
+        }
+
 
         public static void ModelList()
         {
@@ -162,29 +188,27 @@ namespace Scaffold.DynamicUIGenerator
                 var klassName = type.FullName;
                 if (klassName != null && klassName.StartsWith("Scaffold.Models"))
                 {
-                    Console.WriteLine(klassName); 
-                    foreach(var prop in type.GetProperties())
+                    Console.WriteLine(klassName);
+                    foreach (var prop in type.GetProperties())
                     {
                         var atttrs = prop.GetCustomAttributes(false);
                         foreach (var attr in atttrs)
                         {
                             if (attr.GetType().Name.Equals("DisplayAttribute"))
                             {
-                                Console.WriteLine("Display Name {0}",  prop.GetCustomAttribute<DisplayAttribute>().Name); 
+                                Console.WriteLine("Display Name {0}", prop.GetCustomAttribute<DisplayAttribute>().Name);
                             }
                             else if (attr.GetType().Name.Equals("DataTypeAttribute"))
                             {
-                                Console.WriteLine("Data Type {0}",  prop.GetCustomAttribute<DataTypeAttribute>().DataType); 
+                                Console.WriteLine("Data Type {0}",
+                                    prop.GetCustomAttribute<DataTypeAttribute>().DataType);
                             }
-                            Console.WriteLine("{0}", attr.GetType().Name);  
+                            Console.WriteLine("{0}", attr.GetType().Name);
                         }
-                        Console.WriteLine("{0} {1}", prop.Name, prop.PropertyType );
+                        Console.WriteLine("{0} {1}", prop.Name, prop.PropertyType);
                     }
                 }
-                
             }
         }
-        
-       
     }
 }
