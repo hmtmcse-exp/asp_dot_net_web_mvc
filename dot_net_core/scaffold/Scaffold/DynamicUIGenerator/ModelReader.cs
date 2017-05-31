@@ -91,13 +91,8 @@ namespace Scaffold.DynamicUIGenerator
             }
             else
             {
-                var sourceCodePath = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
-                var controllersPath = Path.Combine(sourceCodePath,"Controllers");
-                var viewPath = Path.Combine(sourceCodePath,"Views");
-                var componentPath = Path.Combine(sourceCodePath,"component");
-                var viewComponentPath = Path.Combine(componentPath, "view");
-                var viewModel = "";
-
+                
+               
                 Assembly myAssembly = Assembly.GetEntryAssembly();
                 Type type = myAssembly.GetType(modelNamespace);
                 if (type == null)
@@ -106,8 +101,15 @@ namespace Scaffold.DynamicUIGenerator
                 }
                 else
                 {
+                    var sourceCodePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "Scaffold");
+                    var controllersPath = Path.Combine(sourceCodePath,"Controllers");
+                    var viewPath = Path.Combine(sourceCodePath,"Views");
+                    var componentPath = Path.Combine(sourceCodePath,"component");
+                    var viewComponentPath = Path.Combine(componentPath, "view");
+                    
                     var modelName = type.Name;
-                    viewModel = Path.Combine(viewPath, modelName);
+                    var viewModel = Path.Combine(viewPath, modelName);
+                    Console.WriteLine("{0} {1} {2} ", viewPath, modelName, viewModel);
                     if (Directory.Exists(viewModel))
                     {
                         Directory.Delete(viewModel,true);
@@ -185,7 +187,7 @@ namespace Scaffold.DynamicUIGenerator
                     WriteToFile(Path.Combine(viewModel, "Index.cshtml"), text);
                         
                     text = ReadFile(Path.Combine(componentPath, "Controller.txt"), modelName, modelNamespace);
-                    WriteToFile(Path.Combine(componentPath, modelName + "Controller.cs"), text);
+                    WriteToFile(Path.Combine(controllersPath, modelName + "Controller.cs"), text);
                         
                 }
             }
@@ -194,6 +196,7 @@ namespace Scaffold.DynamicUIGenerator
 
         public static void WriteToFile(string location, string content)
         {
+            Console.WriteLine("{0} {1} ", location, content);
             if (File.Exists(location))
             {
                 File.Delete(location);

@@ -15,6 +15,7 @@
     <Folder Include="DynamicUIGenerator\Templates\StaticFiles\Scripts" />
     <Folder Include="DynamicUIGenerator\Templates\ViewGenerator" />
     <Folder Include="Properties" />
+    <Folder Include="Views\Organizer" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyConsole\MyConsole.csproj">
