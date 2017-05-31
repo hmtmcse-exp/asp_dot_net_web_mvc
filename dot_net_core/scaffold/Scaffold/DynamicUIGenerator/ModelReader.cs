@@ -72,8 +72,8 @@ namespace Scaffold.DynamicUIGenerator
 
         private static void GenerateTableCol(string name)
         {
-            tableHead += "<table-header name=\"" + name + "\">" + name + "</table-header>";
-            tableBody += "<td>@Html.DisplayFor(modelItem => item." + name + ")</td>";
+            tableHead += "<table-header name=\"" + name + "\">" + name + "</table-header>" + Environment.NewLine;
+            tableBody += "<td>@Html.DisplayFor(modelItem => item." + name + ")</td>" + Environment.NewLine;
         }
 
         private static void GenerateDetails(string name)
@@ -178,7 +178,7 @@ namespace Scaffold.DynamicUIGenerator
                     WriteToFile(Path.Combine(viewModel, "Edit.cshtml"), text);
                         
                     text = ReadFile(Path.Combine(viewComponentPath, "Form.cshtml"), modelName, modelNamespace);
-                    text = text?.Replace("__FORM_ROW__", tableHead);
+                    text = text?.Replace("__FORM_ROW__", formRow);
                     WriteToFile(Path.Combine(viewModel, "Form.cshtml"), text);
                         
                     text = ReadFile(Path.Combine(viewComponentPath, "Index.cshtml"), modelName, modelNamespace);
