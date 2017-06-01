@@ -12,10 +12,8 @@ namespace Scaffold
     {
         public static void Main(string[] args)
         {
-            ModelReader.Read(args[0]);
-            
+           
             var action = args[0];
-
             switch (action)
             {
                 case "list":
